@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { auth } from '../../API/firebase'
+import { sigupUser } from '../../redux/actions/authActions'
+import { useDispatch } from 'react-redux'
 const RegisterPage = () => {
   const [nameRef, emailRef, passwordRef, confirmPasswordRef] = [
     useRef(),
@@ -7,20 +8,30 @@ const RegisterPage = () => {
     useRef(),
     useRef(),
   ]
+
+  const dispatch = useDispatch()
   const handleFormSubmit = event => {
     event.preventDefault()
-    auth
-      .createUserWithEmailAndPassword(
+
+    dispatch(
+      sigupUser(
+        nameRef.current.value,
         emailRef.current.value,
         passwordRef.current.value,
-      )
-      .then(() => {
-        auth.currentUser
-          .updateProfile({ displayName: nameRef.current.value })
-          .then(() => {
-            console.log('newUser', auth.currentUser)
-          })
-      })
+      ),
+    )
+    // auth
+    //   .createUserWithEmailAndPassword(
+    //     emailRef.current.value,
+    //     passwordRef.current.value,
+    //   )
+    //   .then(() => {
+    //     auth.currentUser
+    //       .updateProfile({ displayName: nameRef.current.value })
+    //       .then(() => {
+    //         console.log('newUser', auth.currentUser)
+    //       })
+    //   })
   }
   return (
     <>

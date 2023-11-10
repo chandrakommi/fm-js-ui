@@ -1,21 +1,17 @@
 import { useRef } from 'react'
-import { auth } from '../../API/firebase'
+import { siginUser } from '../../redux/actions/authActions'
+import { useDispatch } from 'react-redux'
 
 const LoginPage = () => {
   const emailRef = useRef()
   const passwordRef = useRef()
+  const dispatch = useDispatch()
+  
   const handleFormSubmit = event => {
     event.preventDefault()
-
-    auth
-      .signInWithEmailAndPassword(
-        emailRef.current.value,
-        passwordRef.current.value,
-      )
-      .then(user => {
-        console.log(user)
-      })
+    dispatch(siginUser(emailRef.current.value, passwordRef.current.value))
   }
+
   return (
     <>
       <form onSubmit={handleFormSubmit}>
