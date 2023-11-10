@@ -22,6 +22,13 @@ const _checkUserSignedIn = payload => {
   }
 }
 
+const _signOutUser = payload => {
+  return {
+    type: authActionTypes.SIGN_OUT,
+    payload,
+  }
+}
+
 const sigupUser = (name, email, password) => dispatch => {
   auth
     .createUserWithEmailAndPassword(email, password)
@@ -54,14 +61,27 @@ const siginUser = (email, password) => dispatch => {
 
 const checkUserSignedIn = () => dispatch => {
   auth.onAuthStateChanged(user => {
-    const { displayName, email, uid } = user
-    dispatch(
-      _checkUserSignedIn({
-        email: email,
-        displayName: displayName,
-        uid: uid,
-      }),
-    )
+    if (user) {
+      const { displayName, email, uid } = user
+      dispatch(
+        _checkUserSignedIn({
+          email: email,
+          displayName: displayName,
+          uid: uid,
+        }),
+      )
+    } else {
+      console.log('user not logged in')
+      // dispatch()
+    }
   })
 }
-export { sigupUser, siginUser, checkUserSignedIn }
+
+const signOutUser = () => dispatch => {
+  auth.signOut().then(user => {
+    console.log(user)
+    dispatch(_signOutUser({ email: null, displayName: null, uid: null }))
+  })
+}
+
+export { sigupUser, siginUser, checkUserSignedIn, signOutUser }

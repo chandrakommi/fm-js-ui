@@ -30,11 +30,8 @@ const authReducer = (state = initialState, { type, payload }) => {
       }
     }
     case authActionTypes.SIGN_OUT:
-      return {
-        isAuthenticated: false,
-        user: null,
-        uid: null,
-      }
+      return { ...initialState }
+
     default:
       return state
   }
